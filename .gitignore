@@ -1,0 +1,6 @@
+heart_disease_venv/
+models/
+data/
+*.pyc
+__pycache__/
+.DS_Store
