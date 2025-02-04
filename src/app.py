@@ -3,12 +3,10 @@ import pandas as pd
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from src.data_loader import DataLoader
 from src.eda import EDA
 from src.model import HeartDiseaseModel
 from src.predict import make_prediction, interpret_prediction
-
 
 def main():
     st.title("Heart Disease Risk Prediction App")
@@ -41,17 +39,25 @@ def main():
             default=["Basic Statistics", "Distributions"],
         )
 
-        if "Basic Statistics" in eda_options:
-            eda.show_basic_stats()
-        if "Distributions" in eda_options:
-            numeric_cols = df.select_dtypes(include=["number"]).columns.tolist()
-            categorical_cols = df.select_dtypes(exclude=["number"]).columns.tolist()
-            eda.plot_distributions(numeric_cols, categorical_cols)
-        if "Correlation Matrix" in eda_options:
-            eda.plot_correlation_matrix()
-        if "Target Distribution" in eda_options:
-            target_col = "Heart Disease Status"
-            eda.plot_target_distribution(target_col)
+        tab1, tab2 = st.tabs(["Basic Stats and Correlation", "Distributions"])
+
+        with tab1:
+            col1, col2 = st.columns(2)  # Create 2 columns
+            with col1:
+                if "Basic Statistics" in eda_options:
+                    eda.show_basic_stats()
+            with col2:
+                if "Correlation Matrix" in eda_options:
+                    eda.plot_correlation_matrix()
+
+        with tab2:
+            if "Distributions" in eda_options:
+                numeric_cols = df.select_dtypes(include=["number"]).columns.tolist()
+                categorical_cols = df.select_dtypes(exclude=["number"]).columns.tolist()
+                eda.plot_distributions(numeric_cols, categorical_cols)
+            if "Target Distribution" in eda_options:
+                target_col = "Heart Disease Status"
+                eda.plot_target_distribution(target_col)
 
     except FileNotFoundError:
         st.error(

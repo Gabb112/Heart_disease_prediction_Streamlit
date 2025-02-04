@@ -15,20 +15,21 @@ class EDA:
 
     def plot_distributions(self, numeric_cols, categorical_cols):
         st.header("Distributions of Features")
-
         st.subheader("Numeric Features")
         for col in numeric_cols:
-            fig, ax = plt.subplots(figsize=(8, 4))
+            fig, ax = plt.subplots(figsize=(6, 3))  # Reduced figure size
             sns.histplot(self.df[col], kde=True, ax=ax)
             ax.set_title(f"Distribution of {col}")
             st.pyplot(fig)
+            plt.close(fig)  # Close the figure after displaying it
 
         st.subheader("Categorical Features")
         for col in categorical_cols:
-            fig, ax = plt.subplots(figsize=(8, 4))
+            fig, ax = plt.subplots(figsize=(6, 3))  # Reduced figure size
             sns.countplot(x=self.df[col], ax=ax)
             ax.set_title(f"Countplot of {col}")
             st.pyplot(fig)
+            plt.close(fig)  # Close the figure after displaying it
 
     def plot_correlation_matrix(self):
         st.header("Correlation Matrix")
